@@ -54,13 +54,13 @@ class TestResponseModels(unittest.TestCase):
 
     def test_escotista_mappa(self):
         data = '''{
-        "codigo": 50442, 
-        "codigoAssociado": 850829, 
-        "username": "Guionardo", 
+        "codigo": 50442,
+        "codigoAssociado": 850829,
+        "username": "Guionardo",
         "nomeCompleto": "GuionardoFurlan",
-        "ativo": "S", 
-        "codigoGrupo": 32, 
-        "codigoRegiao": "SC", 
+        "ativo": "S",
+        "codigoGrupo": 32,
+        "codigoRegiao": "SC",
         "codigoFoto": null
     }'''
         escotista = EscotistaModel(data)

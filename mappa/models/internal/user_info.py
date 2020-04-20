@@ -1,5 +1,6 @@
-from base_model import BaseModel
 from datetime import date
+
+from base_model import BaseModel
 
 
 class UserInfoModel(BaseModel):    

@@ -1,15 +1,15 @@
-from typing import List
 from datetime import datetime, timedelta, timezone
+from typing import List
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font
 
+from mappa.models.export.progressao_secao import ProgressaoSecao
 from mappa.models.mappa.marcacao import MarcacaoModel
 from mappa.models.mappa.progressao import ProgressaoModel
 from mappa.models.mappa.secao import SecaoModel
 from mappa.models.mappa.subsecao import SubSecaoModel
 from mappa.service.mappa_service import MAPPAService
-from mappa.models.export.progressao_secao import ProgressaoSecao
 
 
 class MAPPAExportService:
@@ -75,7 +75,7 @@ class MAPPAExportService:
         self.export_progressoes(ramo, wb)
         self.export_secao_progressoes(wb)
         self.export_secao_stats(wb)
-        wb.remove_sheet(ws1)
+        wb.remove(ws1)
 
         return wb
 
@@ -189,7 +189,7 @@ class MAPPAExportService:
 
             lista_stats: List[ProgressaoSecao] = list(stats.values())
 
-            # (Código, Conqustas, Descrição)
+            # (Código, Conquistas, Descrição)
             lista_stats.sort(key=lambda x: x.conquistas)
 
             for index, stat in enumerate(lista_stats):

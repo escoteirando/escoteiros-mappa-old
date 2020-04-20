@@ -10,10 +10,10 @@ coverage = "*"
 
 [packages]
 cache-guiosoft = "*"
-base-model-furlan = "*"
 requests = "*"
 python-dotenv = "*"
 openpyxl = "*"
+base-model-guiosoft = "*"
 
 [requires]
 python_version = "3.6"

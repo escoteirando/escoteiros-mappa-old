@@ -71,7 +71,8 @@ class HTTP:
                         section='mappa',
                         key=cache_key,
                         value=content,
-                        expires_in=max_age)
+                        ttl=max_age)
+
                     http_code = HTTP.OK
                     content = json.loads(content)
                 else:

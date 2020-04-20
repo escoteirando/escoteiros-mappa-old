@@ -6,6 +6,7 @@ from typing import List
 from base_model import ListBaseModel
 from cache_gs import CacheGS
 from cache_gs.utils.logging import get_logger
+
 from mappa.models.internal.base_conhecimento import BaseConhecimentoModel
 from mappa.models.internal.user_info import UserInfoModel
 from mappa.models.mappa.associado import AssociadoModel
@@ -13,12 +14,12 @@ from mappa.models.mappa.escotista import EscotistaModel
 from mappa.models.mappa.especialidade import EspecialidadeModel
 from mappa.models.mappa.grupo import GrupoModel
 from mappa.models.mappa.login import LoginModel
+from mappa.models.mappa.marcacao import MarcacaoModel
+from mappa.models.mappa.marcacoes import MarcacoesModel
 from mappa.models.mappa.progressao import ProgressaoModel
 from mappa.models.mappa.secao import SecaoModel
 from mappa.models.mappa.subsecao import SubSecaoModel
 from mappa.tools.request import HTTP, HTTPResponse
-from mappa.models.mappa.marcacao import MarcacaoModel
-from mappa.models.mappa.marcacoes import MarcacoesModel
 
 
 class MAPPAService:
@@ -72,11 +73,13 @@ class MAPPAService:
         valid_until = login_user.created + \
             datetime.timedelta(seconds=login_user.ttl)
 
-        self._cache.set_value(
-            'mappa',
-            'login_'+username,
-            login_user.to_json(),
-            expires_in=login_user.ttl)
+        self.cache.set_value(
+            section='mappa',
+            key='login_'+username,
+            value=login_user.to_json(),
+            ttl=login_user.ttl
+        )
+        
         self._http.set_authorization(login_user.id, time.time()+login_user.ttl)
         self._user_id = login_user.userId
         self._logger.info(
@@ -85,7 +88,6 @@ class MAPPAService:
         return True
 
     def get_user_info(self, user_id) -> UserInfoModel:
-        # TODO: Carregar escotista, associado e montar UserInfoModel
         escotista = self.get_escotista(user_id)
         if not escotista:
             return None
@@ -256,4 +258,6 @@ class MAPPAService:
 
         return marcacoes
 
-        
+    @property
+    def cache(self) -> CacheGS:
+        return self._cache

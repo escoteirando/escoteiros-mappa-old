@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from mappa.service.mappa_service import MAPPAService
 from mappa.models.mappa.login import LoginModel
 from mappa.service.mappa_export_service import MAPPAExportService
-
+from unittest.mock import Mock,patch
+from tests.mocks.request import MockHTTP
 
 class TestMAPPAService(unittest.TestCase):
 
@@ -16,6 +17,7 @@ class TestMAPPAService(unittest.TestCase):
         self.username = os.getenv('MAPPA_USER')
         self.password = os.getenv('MAPPA_PASS')
         self.svc = MAPPAService(self.cache_file)
+        self.svc._http = MockHTTP(self.svc.cache)
 
     def tearDown(self):
         self.svc._cache.delete_value('TEST', 'LOGIN')
@@ -36,7 +38,7 @@ class TestMAPPAService(unittest.TestCase):
 
         lm2 = LoginModel(cached)
         self.assertDictEqual(lm.to_dict(), lm2.to_dict())
-
+    
     def testLogin(self):
         self.assertTrue(self.svc.login(self.username, self.password))
 
